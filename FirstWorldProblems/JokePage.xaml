@@ -1,0 +1,63 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="FirstWorldProblems.JokePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"    
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696" 
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--Data context is set to sample data above and LayoutRoot contains the root grid where all other page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <!-- The ItemsSource will be updated on LoadData() from content from isolated storage cache and the online database if any new jokes are available-->
+            <controls:Pivot x:Name="jokesPivot" ItemsSource="{Binding JokesToDisplay}" LoadedPivotItem="jokesPivot_LoadedPivotItem" >
+                <controls:Pivot.HeaderTemplate>
+                   <DataTemplate>
+                       <!-- <TextBlock Text="{Binding JokeID}" />-->
+                    </DataTemplate>
+                </controls:Pivot.HeaderTemplate>
+                <controls:Pivot.ItemTemplate>
+                    <DataTemplate>
+                        <!-- add later: SelectionChanged="coursesList_SelectionChanged"-->
+                        <ListBox>
+                            <ScrollViewer Height="330">
+                                <TextBlock  TextWrapping="Wrap" Text="{Binding JokeText}" Width="440" FontSize="60" />
+                            </ScrollViewer>
+                            <ScrollViewer Height="200">
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Statistic}" FontSize="30" Width="440"/>
+                            </ScrollViewer>
+                                <HyperlinkButton NavigateUri="{Binding StatisticURL}"  Content="Statistic Data Source" Height="30" HorizontalAlignment="Left" Margin="10,10,0,0" Name="statistic" TargetName="_blank" VerticalAlignment="Top" />
+
+                                <TextBlock Grid.Column="0" Text="Donate to:" TextAlignment="Left" HorizontalAlignment="Left"  Name="DonateToText" VerticalAlignment="Top" />
+                                <HyperlinkButton Grid.Column="1" NavigateUri="{Binding CharityURL}"  Content="{Binding Charity}" HorizontalAlignment="Left" Name="charity" TargetName="_blank" VerticalAlignment="Top" />
+                   
+                        </ListBox>
+                    </DataTemplate>
+                </controls:Pivot.ItemTemplate>
+            </controls:Pivot>
+            
+        </Grid>
+    </Grid>
+ 
+    <!--Sample code showing usage of ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton Click="LastJokeButton_Click" IconUri="/Images/appbar.back.rest.png" Text="Last Joke"/>
+            <shell:ApplicationBarIconButton Click="FavoriteJokeButton_Click" IconUri="/Images/appbar.favs.addto.rest.png" Text="Favorite Joke"/>
+            <shell:ApplicationBarIconButton Click="NextJokeButton_Click" IconUri="/Images/appbar.next.rest.png" Text="Next Joke"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

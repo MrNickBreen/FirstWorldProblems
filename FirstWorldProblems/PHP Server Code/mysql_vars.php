@@ -6,8 +6,9 @@
 	
 	$lastUpdate = $_GET['lastUpdate'];
 	
-	//Jokes Table's Column Names
+	//FWP Table's Column Names
 	$mysql_jokeTable = "Jokes";
+	$mysql_categoryTable = "Categories";
     $mysql_id = "id";
 	$mysql_joke = "joke";
 	$mysql_author = "author";
@@ -16,6 +17,10 @@
 	$mysql_dateAdded = "dateAdded";
 	$mysql_charity = "charity";
 	$mysql_charityURL = "charityURL";
+	$mysql_favorite = "favorite";
+	$mysql_categoryID = "categoryID";
+	$mysql_categoryText = "categoryText";
+	$mysql_viewCategoryFilter ="viewCategoryFilter";
     
     $connection = mysql_connect($server, $dbUsername, $dbPassword);
 	

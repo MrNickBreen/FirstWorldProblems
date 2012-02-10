@@ -19,7 +19,9 @@
 							$mysql_statisticURL => $itemRow[$mysql_statisticURL],
 							$mysql_dateAdded => $itemRow[$mysql_dateAdded],
 							$mysql_charity => $itemRow[$mysql_charity],
-							$mysql_charityURL => $itemRow[$mysql_charityURL]);
+							$mysql_charityURL => $itemRow[$mysql_charityURL],
+							$mysql_favorite => $itemRow[$mysql_favorite],
+							$mysql_categoryID => $itemRow[$mysql_categoryID]);
 	}
 	mysql_close($connection);
 	

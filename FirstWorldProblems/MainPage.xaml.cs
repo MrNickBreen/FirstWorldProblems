@@ -10,38 +10,52 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-//For JSON deserialization to object
-using Newtonsoft.Json.Linq;
-
-//For XML serialization to object
-using System.Xml.Linq;
-
-//Isolated Storage
-using System.IO.IsolatedStorage;
-using System.IO;
-using System.Windows.Resources;
 
 namespace FirstWorldProblems
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        // Constructor
         public MainPage()
         {
             InitializeComponent();
 
-            // Set the data context of the listbox control to the sample data
-            DataContext = App.ViewModel;
-            this.Loaded += new RoutedEventHandler(MainPage_Loaded);
-        }
-
-        // Load data for the ViewModel Items
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!App.ViewModel.IsDataLoaded)
+            if (!App.ViewModel.categoryViewModel.IsDataLoaded)
             {
+                App.ViewModel.categoryViewModel.LoadData();
+            }            
+
+            if (!App.ViewModel.IsDataLoaded)
+            {   
                 App.ViewModel.LoadData();
             }
+            
         }
+
+        private void AllJokes_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/JokePage.xaml", UriKind.Relative));
+        }
+
+        private void FavoriteJokes_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FilterByCategory_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/FilterByCategoryPage.xaml", UriKind.Relative));
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/AboutPage.xaml", UriKind.Relative));
+        }
+
+      
     }
 }

@@ -16,3 +16,10 @@ c:\users\nick\documents\visual studio 2010\Projects\FirstWorldProblems\FirstWorl
 c:\users\nick\documents\visual studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Newtonsoft.Json.xml
 C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Microsoft.Phone.Controls.dll
 C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Microsoft.Phone.Controls.xml
+C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\obj\Debug\JokePage.g.i.cs
+C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\obj\Debug\AboutPage.g.i.cs
+C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.back.rest.png
+C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.favs.addto.rest.png
+C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.favs.rest.png
+C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.next.rest.png
+C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\obj\Debug\FilterByCategoryPage.g.i.cs

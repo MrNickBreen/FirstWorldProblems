@@ -21,6 +21,8 @@ namespace FirstWorldProblems
         public DateTime DateAdded { get; set; }
         public string Charity { get; set; }
         public string CharityURL { get; set; }
+        public bool Favorite { get; set;}
+        public int CategoryID { get; set; }
 
     }
 }
