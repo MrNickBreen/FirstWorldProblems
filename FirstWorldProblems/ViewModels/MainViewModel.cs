@@ -34,6 +34,13 @@ namespace FirstWorldProblems
         private const string FolderName = "IsolatedStorage";
         private string FilePath = System.IO.Path.Combine(FolderName, FileName);
 
+        public enum PageType
+        {
+            AllJokes = 1,
+            Favorites = 2,
+            FilteredCategoryJokes = 3
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public CategoryViewModel categoryViewModel;
@@ -64,23 +71,24 @@ namespace FirstWorldProblems
         /// </summary>
         public ObservableCollection<Joke> JokesToDisplay { get; private set; }
 
-        private string _lastUpdated = "";
+        private PageType _jokePageType;
         /// <summary>
         /// Sample ViewModel property; this property is used in the view to display its value using a Binding
         /// </summary>
         /// <returns></returns>
-        public string LastUpdated
+        public PageType JokePageType
         {
             get
             {
-                return _lastUpdated;
+                return _jokePageType;
             }
             set
             {
-                if (value != _lastUpdated)
+                if (value != _jokePageType)
                 {
-                    _lastUpdated = value;
-                    NotifyPropertyChanged("LastUpdated");
+                    _jokePageType = value;
+                    //Reload the data to be shown in the pivot since the user wants to see less/more information from the last time the joke page was loaded
+                    loadJokesToDisplay();
                 }
             }
         }
@@ -131,14 +139,56 @@ namespace FirstWorldProblems
 
             foreach (JObject joke in jokesJArray)
             {
+                Joke currentJokeToAdd = new Joke() { CategoryID = (int.Parse(joke["categoryID"].ToString())), Favorite = (joke["favorite"].ToString()=="0" ? false : true), Author = joke["author"].ToString(), Charity = joke["charity"].ToString(), CharityURL = joke["charityURL"].ToString(), DateAdded = DateTime.Parse(joke["dateAdded"].ToString()), JokeID = int.Parse(joke["id"].ToString()), JokeText = joke["joke"].ToString(), Statistic = joke["statistic"].ToString(), StatisticURL = joke["statisticURL"].ToString() };
                 //This collection is bound to the pivot item                
-                this.JokesToDisplay.Add(new Joke() { CategoryID = (int.Parse(joke["categoryID"].ToString())), Favorite = (joke["favorite"].ToString()=="0" ? false : true), Author = joke["author"].ToString(), Charity = joke["charity"].ToString(), CharityURL = joke["charityURL"].ToString(), DateAdded = DateTime.Parse(joke["dateAdded"].ToString()), JokeID = int.Parse(joke["id"].ToString()), JokeText = joke["joke"].ToString(), Statistic = joke["statistic"].ToString(), StatisticURL = joke["statisticURL"].ToString() });
+                this.AllJokes.Add(currentJokeToAdd);
             }
 
-            //TODO: add code for the filtering options.
-            this.AllJokes = this.JokesToDisplay;
-
             this.IsDataLoaded = true;
+        }
+
+        /// <summary>
+        /// Loads the proper subset of jokes into the jokesToDisplay collection
+        /// </summary>
+        private void loadJokesToDisplay()
+        {
+            this.JokesToDisplay.Clear();
+
+            if (JokePageType == PageType.Favorites)
+            {
+                foreach (Joke joke in this.AllJokes)
+                {
+                    if (joke.Favorite)
+                    {
+                        this.JokesToDisplay.Add(joke);
+                    }
+                }
+                if (this.JokesToDisplay.Count == 0)
+                {
+                    this.JokesToDisplay.Add(new Joke() { JokeText = "There are no favorited jokes. Press back, try something else.", Favorite=false});
+                }
+            }
+            else if (JokePageType == PageType.FilteredCategoryJokes)
+            {
+                foreach (Joke joke in this.AllJokes)
+                {
+                    if (categoryViewModel.CategoriesToDisplay.Contains(joke.CategoryID))
+                    {
+                        this.JokesToDisplay.Add(joke);
+                    }
+                }
+                if (this.JokesToDisplay.Count == 0)
+                {
+                    this.JokesToDisplay.Add(new Joke() { JokeText = "There are no filtered jokes. Press back, try something else.", Favorite=false });
+                }
+            }
+            else
+            {
+                foreach (Joke joke in this.AllJokes)
+                {
+                    this.JokesToDisplay.Add(joke);
+                }
+            }
         }
 
         //Processing the response from the database. It will return a JSON object. Using JSON.net to deserlize the object.

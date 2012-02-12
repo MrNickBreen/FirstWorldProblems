@@ -33,12 +33,12 @@ namespace FirstWorldProblems
 
         private void AllJokes_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("/JokePage.xaml", UriKind.Relative));
+            this.NavigationService.Navigate(new Uri("/JokePage.xaml?id=" + MainViewModel.PageType.AllJokes, UriKind.Relative));
         }
 
         private void FavoriteJokes_Click(object sender, RoutedEventArgs e)
         {
-
+            this.NavigationService.Navigate(new Uri("/JokePage.xaml?id=" + MainViewModel.PageType.Favorites, UriKind.Relative));
         }
 
         private void FilterByCategory_Click(object sender, RoutedEventArgs e)

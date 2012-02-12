@@ -38,11 +38,11 @@
                             <ScrollViewer Height="200">
                                 <TextBlock TextWrapping="Wrap" Text="{Binding Statistic}" FontSize="30" Width="440"/>
                             </ScrollViewer>
-                                <HyperlinkButton NavigateUri="{Binding StatisticURL}"  Content="Statistic Data Source" Height="30" HorizontalAlignment="Left" Margin="10,10,0,0" Name="statistic" TargetName="_blank" VerticalAlignment="Top" />
-
-                                <TextBlock Grid.Column="0" Text="Donate to:" TextAlignment="Left" HorizontalAlignment="Left"  Name="DonateToText" VerticalAlignment="Top" />
-                                <HyperlinkButton Grid.Column="1" NavigateUri="{Binding CharityURL}"  Content="{Binding Charity}" HorizontalAlignment="Left" Name="charity" TargetName="_blank" VerticalAlignment="Top" />
-                   
+                          
+                                <HyperlinkButton NavigateUri="{Binding StatisticURL}"  Content="Statistic Data Source" Height="30" HorizontalAlignment="Left" Margin="10,10,0,0" x:Name="statistic" TargetName="_blank" VerticalAlignment="Top" />
+                                <TextBlock Grid.Column="0" Text="Donate to:" TextAlignment="Left" HorizontalAlignment="Left"  x:Name="DonateToText" VerticalAlignment="Top" />
+                                <HyperlinkButton Grid.Column="1" NavigateUri="{Binding CharityURL}"  Content="{Binding Charity}" HorizontalAlignment="Left" x:Name="charity" TargetName="_blank" VerticalAlignment="Top" />
+                  
                         </ListBox>
                     </DataTemplate>
                 </controls:Pivot.ItemTemplate>
@@ -54,9 +54,9 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton Click="LastJokeButton_Click" IconUri="/Images/appbar.back.rest.png" Text="Last Joke"/>
-            <shell:ApplicationBarIconButton Click="FavoriteJokeButton_Click" IconUri="/Images/appbar.favs.addto.rest.png" Text="Favorite Joke"/>
-            <shell:ApplicationBarIconButton Click="NextJokeButton_Click" IconUri="/Images/appbar.next.rest.png" Text="Next Joke"/>
+            <shell:ApplicationBarIconButton x:Name="backButton"  Click="LastJokeButton_Click" IconUri="/Images/appbar.back.rest.png" Text="Last Joke"/>
+            <shell:ApplicationBarIconButton x:Name="favoriteButton" Click="FavoriteJokeButton_Click" IconUri="/Images/appbar.favs.addto.rest.png" Text="Favorite Joke"/>
+            <shell:ApplicationBarIconButton x:Name="forwardButtton" Click="NextJokeButton_Click" IconUri="/Images/appbar.next.rest.png" Text="Next Joke"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

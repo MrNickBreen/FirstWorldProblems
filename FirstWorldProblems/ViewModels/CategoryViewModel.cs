@@ -31,12 +31,12 @@ namespace FirstWorldProblems
         /// <summary>
         /// A collection for category objects to be displayed.(this could be a subset of AllJokes)
         /// </summary>
-        public ObservableCollection<Category> CategoriesToDisplay { get; private set; }
+        public List<int> CategoriesToDisplay { get; private set; }
 
         public CategoryViewModel()
         {
             this.AllCategories = new ObservableCollection<Category>();
-            this.CategoriesToDisplay = new ObservableCollection<Category>();
+            this.CategoriesToDisplay = new List<int>();
         }
 
         public bool IsDataLoaded
@@ -50,12 +50,7 @@ namespace FirstWorldProblems
         /// </summary>
         public void LoadData()
         {
-            //Sample data to test the page to see if it displays correctly
-            this.CategoriesToDisplay.Add(new Category() { CategoryID = 21, ViewCategoryFilter = false, DateAdded = new DateTime(2010,12,12), CategoryText = "testing1" });
-            this.CategoriesToDisplay.Add(new Category() { CategoryID = 41, ViewCategoryFilter = true, DateAdded = new DateTime(2012, 12, 12), CategoryText = "testing2" });
-            this.CategoriesToDisplay.Add(new Category() { CategoryID = 51, ViewCategoryFilter = false, DateAdded = new DateTime(2014, 12, 12), CategoryText = "testing3" });
-
-
+            
             string lastCategoryUpdateTime = getLastPropertyUpdateDatetime("lastCategoryUpdate");
             //When we put data in isolated storage we record the datetime of the most recent joke. If we don't have this setting this means we don't have any
             //jokes in isolated storage.
@@ -72,13 +67,37 @@ namespace FirstWorldProblems
             SMEWebClient.DownloadStringAsync(new Uri("http://www.smewebsites.com/playground/FWP/get_categories.php?lastUpdate=" + lastCategoryUpdateTime));
         }
 
+        private int findIndexOfCategory(int categoryID)
+        {
+            for (int i = 0; i <= AllCategories.Count; i++)
+            {
+                if (AllCategories[i].CategoryID == categoryID)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         /// <summary>
-        /// Update the data for a category in the cache. This information is used for filter the jokes based on category type
+        /// Update the data for a category in the cache and in local data. This information is used for filter the jokes based on category type
         /// </summary>
         /// <param name="filterStatus">1 represents show the jokes in this category, 0 represents don't show the jokes in this category</param>
         /// <param name="categoryID">the identifier for the category we want to edit</param>
         public void FilterCategoryUpdate(bool filterStatus, int categoryID)
         {
+            if (filterStatus == false)
+            {
+                this.CategoriesToDisplay.Remove(categoryID);
+            }
+            else
+            {
+                this.CategoriesToDisplay.Add(categoryID);
+            }
+
+            AllCategories[findIndexOfCategory(categoryID)].ViewCategoryFilter = filterStatus;
+
+            //Updating isolated stoarge cache
             EditObjectAttribute(FilePath, (filterStatus ? "1" : "0"), categoryID, "viewCategoryFilter", "categoryID");
         }
 
@@ -97,11 +116,12 @@ namespace FirstWorldProblems
             foreach (JObject category in categoryJArray)
             {
                 //This collection is bound to the pivot item                
-                this.CategoriesToDisplay.Add(new Category() { CategoryID = (int.Parse(category["categoryID"].ToString())), ViewCategoryFilter = (category["viewCategoryFilter"].ToString() == "0" ? false : true), DateAdded = DateTime.Parse(category["dateAdded"].ToString()), CategoryText = category["categoryText"].ToString() });
+                this.AllCategories.Add(new Category() { CategoryID = (int.Parse(category["categoryID"].ToString())), ViewCategoryFilter = (category["viewCategoryFilter"].ToString() == "0" ? false : true), DateAdded = DateTime.Parse(category["dateAdded"].ToString()), CategoryText = category["categoryText"].ToString() });
+                if (category["viewCategoryFilter"].ToString() == "1")
+                {
+                    this.CategoriesToDisplay.Add(int.Parse(category["categoryID"].ToString()));
+                }
             }
-
-            //TODO: add code for the filtering options.
-            this.AllCategories = this.CategoriesToDisplay;
 
             this.IsDataLoaded = true;
         }

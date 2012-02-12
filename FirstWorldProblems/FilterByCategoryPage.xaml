@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -21,22 +22,29 @@
         </Grid.RowDefinitions>
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-         <TextBlock Text="Category" />
-            <ScrollViewer Height="604" HorizontalAlignment="Left" Margin="6,44,0,0" Name="scrollViewer1" VerticalAlignment="Top" Width="444" >
-                <ListBox Name="categoryListBox" ItemsSource="{Binding CategoriesToDisplay}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+         <TextBlock Text="Joke categories to display" Grid.Row="0" />
+            <ScrollViewer Grid.Row="1" Height="604" HorizontalAlignment="Left" Margin="6,44,0,0" Name="scrollViewer1" VerticalAlignment="Top" Width="444" >
+                <ListBox x:Name="categoryListBox" SelectionMode="Multiple" ItemsSource="{Binding AllCategories}" Loaded="categoryListBox_Loaded">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
-                                <CheckBox Grid.Column="0" Name="{Binding CategoryID}" Content="{Binding ViewCategoryFilter}" />                              
-                                <TextBox Grid.Column="1" Text="{Binding CategoryText}"/>
-                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.50*"/>
+                                    <ColumnDefinition Width="0.50*"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0" Tag="{Binding CategoryID}" IsChecked="{Binding ViewCategoryFilter}" Click="CheckBox_Checked"/>                            
+                                <TextBlock Grid.Column="1" Text="{Binding CategoryText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>                              
+                            </Grid>
                         </DataTemplate>                        
                     </ListBox.ItemTemplate>                        
                 </ListBox>
-                
-                    
-                
             </ScrollViewer>
+            <Button Grid.Row="2" Name="FilteredCategoryJokes" Click="FilteredCategoryJokes_Click" Content="Show Filtered Jokes" BorderBrush="Chartreuse" BorderThickness="2" Margin="6,6,6,648" />
         </Grid>
     </Grid>
  
