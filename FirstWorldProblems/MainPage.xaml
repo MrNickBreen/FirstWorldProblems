@@ -25,6 +25,7 @@
            <Button Name="AllJokes" Click="AllJokes_Click" Content="All Jokes" BorderBrush="Aquamarine" BorderThickness="2" Margin="6,6,241,664" />
            <Button Name="FavoriteJokes" Click="FavoriteJokes_Click" Content="Favorites" BorderBrush="CornflowerBlue" BorderThickness="2" Margin="204,6,6,664" />
             <Button Content="Filter By Category" Height="102" HorizontalAlignment="Left" Margin="6,149,0,0" Name="FilterByCategory" Click="FilterByCategory_Click" VerticalAlignment="Top" Width="433" />
+            <Button Content="About" Height="102" HorizontalAlignment="Left" Margin="6,280,0,0" BorderBrush="CadetBlue" Name="AboutPage" Click="About_Click" VerticalAlignment="Top" Width="433" />
             <!--<Button Content="Settings" Height="78" HorizontalAlignment="Left" Margin="0,308,0,0" Name="Settings" Click="Settings_Click" VerticalAlignment="Top" Width="450" />-->
         </Grid>
     </Grid>

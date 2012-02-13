@@ -23,12 +23,18 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+                <!-- DRS These widths are hardcoded, not sure how to make dynamic-->
+                <RowDefinition Height="63"/>
+                <RowDefinition Height="62" />
+                <RowDefinition Height="560"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-         <TextBlock Text="Joke categories to display" Grid.Row="0" />
-            <ScrollViewer Grid.Row="1" Height="604" HorizontalAlignment="Left" Margin="6,44,0,0" Name="scrollViewer1" VerticalAlignment="Top" Width="444" >
+            <!--TitlePanel contains the name of the application and page title-->
+            <StackPanel x:Name="TitlePanel" Margin="12,17,0,3" Grid.Row="0">
+                <TextBlock x:Name="PageTitle" Text="Category Filter Page" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+            </StackPanel>
+            <TextBlock TextWrapping="Wrap" Text="{Binding Path=MessageToDisplay, Mode=TwoWay}" x:Name="MessageTextBlock" Grid.Row="1" Style="{StaticResource PhoneTextTitle3Style}" Margin="0,0,0,0" Height="66" />
+            <ScrollViewer Grid.Row="2" HorizontalAlignment="Left" Margin="6,44,0,0" Name="scrollViewer1" VerticalAlignment="Top" Width="444" >
                 <ListBox x:Name="categoryListBox" SelectionMode="Multiple" ItemsSource="{Binding AllCategories}" Loaded="categoryListBox_Loaded">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -44,7 +50,7 @@
                     </ListBox.ItemTemplate>                        
                 </ListBox>
             </ScrollViewer>
-            <Button Grid.Row="2" Name="FilteredCategoryJokes" Click="FilteredCategoryJokes_Click" Content="Show Filtered Jokes" BorderBrush="Chartreuse" BorderThickness="2" Margin="6,6,6,648" />
+            <Button Grid.Row="3" Name="FilteredCategoryJokes" Click="FilteredCategoryJokes_Click" Content="Show Filtered Jokes" BorderBrush="Chartreuse" BorderThickness="2" Margin="6,6,6,648" />
         </Grid>
     </Grid>
  

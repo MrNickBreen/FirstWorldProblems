@@ -26,10 +26,7 @@ namespace FirstWorldProblems
         // Load data for the ViewModel Items
         private void FilterByCategoryPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!App.ViewModel.IsDataLoaded)
-            {
-                App.ViewModel.LoadData();
-            }
+           
         }
 
         private void categoryListBox_Loaded(object sender, RoutedEventArgs e)
@@ -45,7 +42,10 @@ namespace FirstWorldProblems
         {
             App.ViewModel.categoryViewModel.FilterCategoryUpdate((((System.Windows.Controls.CheckBox)sender).IsChecked == false ? false : true), int.Parse(((System.Windows.Controls.CheckBox)sender).Tag.ToString()));
             
-            App.ViewModel.JokePageType = MainViewModel.PageType.AllJokes;
+            //I reset the jokePageType because the joke data will not update in the following scenario. If the user filters jokes, presses back and applys a new filter and views those jokes. 
+            //It will not update the new filtered joke data since the PageType would be the same (filterCategoryJokes). Setting the PageType to ResetJokes 
+            //allows the page to update with the newest Category data if the users chooses to view the filtered jokes.
+            App.ViewModel.JokePageType = MainViewModel.PageType.ResetJokes;
         }
 
         private void FilteredCategoryJokes_Click(object sender, RoutedEventArgs e)

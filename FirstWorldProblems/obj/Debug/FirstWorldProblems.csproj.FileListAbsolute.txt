@@ -22,3 +22,4 @@ C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorl
 C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.favs.rest.png
 C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.next.rest.png
 C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\obj\Debug\FilterByCategoryPage.g.i.cs
+C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\obj\Debug\AboutPage.g.i.cs

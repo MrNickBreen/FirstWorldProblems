@@ -15,6 +15,7 @@ using System.Collections.Generic;
 //For JSON deserialization to object
 using Newtonsoft.Json.Linq;
 
+
 namespace FirstWorldProblems
 {
     public class CategoryViewModel : HelperMethods
@@ -32,6 +33,23 @@ namespace FirstWorldProblems
         /// A collection for category objects to be displayed.(this could be a subset of AllJokes)
         /// </summary>
         public List<int> CategoriesToDisplay { get; private set; }
+
+        private string _messageToDisplay;
+
+        /// <summary>
+        /// This is only used to display a message for the user to read.
+        /// </summary>
+        public string MessageToDisplay
+        {
+            get
+            {
+                return _messageToDisplay;
+            }
+            set
+            {
+                _messageToDisplay = value;
+            }
+        } 
 
         public CategoryViewModel()
         {
@@ -51,7 +69,7 @@ namespace FirstWorldProblems
         public void LoadData()
         {
             
-            string lastCategoryUpdateTime = getLastPropertyUpdateDatetime("lastCategoryUpdate");
+            string lastCategoryUpdateTime = getIsolatedStorageProperty(IsolatedStorageSettingsProperties.lastCategoryUpdate);
             //When we put data in isolated storage we record the datetime of the most recent joke. If we don't have this setting this means we don't have any
             //jokes in isolated storage.
             if (lastCategoryUpdateTime != "")
@@ -59,12 +77,31 @@ namespace FirstWorldProblems
                 LoadDataFromIsolatedStorage();
             }
 
-            this.IsDataLoaded = true;
+            if (HaveUseableInternetConnection() != false)
+            {
+                this.IsDataLoaded = true;
 
-            //Sending the request to the database to get new jokes.
-            WebClient SMEWebClient = new WebClient();
-            SMEWebClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(SMEWebClient_DownloadStringCompleted);
-            SMEWebClient.DownloadStringAsync(new Uri("http://www.smewebsites.com/playground/FWP/get_categories.php?lastUpdate=" + lastCategoryUpdateTime));
+                //Sending the request to the database to get new jokes.
+                WebClient SMEWebClient = new WebClient();
+                SMEWebClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(SMEWebClient_DownloadStringCompleted);
+                SMEWebClient.DownloadStringAsync(new Uri("http://www.smewebsites.com/playground/FWP/get_categories.php?lastUpdate=" + lastCategoryUpdateTime));
+            }
+            else
+            {
+                if (lastCategoryUpdateTime == "")
+                {
+                    //We don't have access to the internet and nothing is stored in cache. We will let the user know they need an internet connection
+                    //DRS
+                    if (App.ViewModel.UserPermittedAppToConnectToInternet)
+                    {
+                        MessageToDisplay = "Please connect to the internet and try again.";
+                    }
+                    else
+                    {
+                        MessageToDisplay = "Go to the about page, allow the app to access the Internet.";
+                    }
+                }
+            }
         }
 
         private int findIndexOfCategory(int categoryID)
@@ -140,9 +177,9 @@ namespace FirstWorldProblems
             {
                 string newestCategories = (e.Result).ToString();
 
-                updateLastPropertyUpdatedTime(newestCategories, "lastCategoryUpdate");
+                updateLastPropertyUpdatedTime(newestCategories, IsolatedStorageSettingsProperties.lastCategoryUpdate);
 
-                //The e.result contains only new items we don't have in our cache,  add these items into our isolated storage.
+                //The e.result contains only new items we don't have in our cache, add these items into our isolated storage.
                 AddNewObjectsToIsolatedStorage(newestCategories, FilePath);
 
                 LoadCategoriesIntoCollection(newestCategories);

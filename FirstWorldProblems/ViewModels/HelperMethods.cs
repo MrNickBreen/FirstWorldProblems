@@ -13,30 +13,73 @@ using System.ComponentModel;
 using System.Windows.Resources;
 using System.IO;
 
+//Network information
+using System.Net.NetworkInformation;
+
 namespace FirstWorldProblems
 {
     public class HelperMethods
     {
+
+        //Note: Do not create any global variables that can be changed in the helperMethod, even if both MainViewModel and CategoryViewModel need to both use said
+        //variable. Since mainViewModel and CategoryViewModel are both inherited from HelperMethods class, each model will have their own instance of said variable.
+        //Which means there may be two seperate values (this is not good).
+        protected enum IsolatedStorageSettingsProperties
+        {
+            lastJokeUpdate = 1,
+            lastCategoryUpdate = 2,
+            userPermittedAppToConnectToInternet = 3
+        }
         protected IsolatedStorageSettings isolatedStorageSettings = IsolatedStorageSettings.ApplicationSettings;
 
-        //propertyType options are: lastJokeUpdate or lastCategoryUpdate
-        protected String getLastPropertyUpdateDatetime(string propertyName)
+       
+
+        protected bool HaveUseableInternetConnection()
         {
-            if (isolatedStorageSettings.Contains(propertyName) == false)
+            if (NetworkInterface.GetIsNetworkAvailable() == false || App.ViewModel.UserPermittedAppToConnectToInternet == false)
             {
-                isolatedStorageSettings.Add(propertyName, "");
-                isolatedStorageSettings.Save();
-                return "";
+                return false;
             }
             else
             {
-                return isolatedStorageSettings[propertyName].ToString();
+                return true;
             }
         }
 
+        //propertyType options are: lastJokeUpdate or lastCategoryUpdate or userPermittedAppToConnectToInternet
+        protected String getIsolatedStorageProperty(IsolatedStorageSettingsProperties propertyName)
+        {
+            String propertyNameString = propertyName.ToString();
+            if (isolatedStorageSettings.Contains(propertyName.ToString()) == false)
+            {
+                if (propertyName == IsolatedStorageSettingsProperties.userPermittedAppToConnectToInternet)
+                {
+                    //TODO: change default to true;
+                    isolatedStorageSettings.Add(propertyName.ToString(), false);
+                    isolatedStorageSettings.Save();
+                    return "false";
+                }
+                else
+                {
+                    isolatedStorageSettings.Add(propertyName.ToString(), "");
+                    isolatedStorageSettings.Save();
+                    return "";
+                }
+            }
+            else
+            {
+                return isolatedStorageSettings[propertyName.ToString()].ToString();
+            }
+        }
+
+       
         //code Credit: http://www.windowsphonegeek.com/tips/all-about-wp7-isolated-storage-store-data-in-isolatedstoragesettings
-        //propertyType options are: lastJokeUpdate or lastCategoryUpdate
-        protected void updateLastPropertyUpdatedTime(string dataFromDatabase, string propertyType)
+        /// <summary>
+        /// Method specific to updating the dateAdded for categories or joke
+        /// </summary>
+        /// <param name="dataFromDatabase">New update value</param>
+        /// <param name="propertyType">the property we are updating.</param>
+        protected void updateLastPropertyUpdatedTime(string dataFromDatabase, IsolatedStorageSettingsProperties propertyType)
         {
             //To find find the newest entry we will use a very crude method of searching for the first index of the columnName 'dateAdded'
             //in the data we recieved from the database, which is ordered newest to oldest.
@@ -44,15 +87,25 @@ namespace FirstWorldProblems
             int positionOfEndOfDate = dataFromDatabase.IndexOf("\"", positionOfBegginingOfDate);
             string newestDateFromProperty = dataFromDatabase.Substring(positionOfBegginingOfDate, positionOfEndOfDate - positionOfBegginingOfDate);
 
+            updateIsolatedStorageProperty(newestDateFromProperty, propertyType);
+        }
+
+        /// <summary>
+        /// General method to update settings in isolated storage.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="propertyType"></param>
+        protected void updateIsolatedStorageProperty(string value, IsolatedStorageSettingsProperties propertyType)
+        {
             //Add newestDateFromJokes to isolated storage settings
-            if (isolatedStorageSettings.Contains(propertyType) == false)
+            if (isolatedStorageSettings.Contains(propertyType.ToString()) == false)
             {
                 //this is a sanity check, when we call the query we should have already created lastJokeUpdate in the settings.
-                isolatedStorageSettings.Add(propertyType, newestDateFromProperty);
+                isolatedStorageSettings.Add(propertyType.ToString(), value);
             }
             else
             {
-                isolatedStorageSettings[propertyType] = newestDateFromProperty;
+                isolatedStorageSettings[propertyType.ToString()] = value;
             }
 
             isolatedStorageSettings.Save();

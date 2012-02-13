@@ -25,7 +25,6 @@ using System.IO.IsolatedStorage;
 using System.IO;
 using System.Windows.Resources;
 
-
 namespace FirstWorldProblems
 {
     public class MainViewModel : HelperMethods
@@ -34,11 +33,49 @@ namespace FirstWorldProblems
         private const string FolderName = "IsolatedStorage";
         private string FilePath = System.IO.Path.Combine(FolderName, FileName);
 
+        private bool _userPermittedAppToConnectToInternet;
+
+        public bool UserPermittedAppToConnectToInternet
+        {
+            get
+            {
+                return _userPermittedAppToConnectToInternet;
+            }
+            set
+            {
+                _userPermittedAppToConnectToInternet = value;
+                
+                if (value)
+                {
+                    //Clear the error messages from all the pages
+                    this.JokesToDisplay.Clear();
+                    this.AllJokes.Clear();
+                    this.categoryViewModel.AllCategories.Clear();
+                    this.categoryViewModel.CategoriesToDisplay.Clear();
+                    this.MessageToDisplay = "";
+                    this.categoryViewModel.MessageToDisplay = "";
+
+                    if (!this.categoryViewModel.IsDataLoaded)
+                    {
+                        this.categoryViewModel.LoadData();
+                    }
+
+                    if (!this.IsDataLoaded)
+                    {
+                        this.LoadData();
+                    }
+                }
+                updateIsolatedStorageProperty(value.ToString(), IsolatedStorageSettingsProperties.userPermittedAppToConnectToInternet);
+            }
+
+        } 
+
         public enum PageType
         {
             AllJokes = 1,
             Favorites = 2,
-            FilteredCategoryJokes = 3
+            FilteredCategoryJokes = 3,
+            ResetJokes = 4
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -59,6 +96,9 @@ namespace FirstWorldProblems
             this.AllJokes = new ObservableCollection<Joke>();
             this.JokesToDisplay = new ObservableCollection<Joke>();
             this.categoryViewModel = new CategoryViewModel();
+
+            //Checks wether the user has permitted us to access the internet to get more jokes
+            UserPermittedAppToConnectToInternet = bool.Parse(getIsolatedStorageProperty(IsolatedStorageSettingsProperties.userPermittedAppToConnectToInternet));
         }
 
         /// <summary>
@@ -70,6 +110,23 @@ namespace FirstWorldProblems
         /// A collection for joke objects.(this could be a subset of AllJokes)
         /// </summary>
         public ObservableCollection<Joke> JokesToDisplay { get; private set; }
+
+        private string _messageToDisplay;
+
+        /// <summary>
+        /// This is only used to display a message for the user to read.
+        /// </summary>
+        protected string MessageToDisplay
+        {
+            get
+            {
+                return _messageToDisplay;
+            }
+            set
+            {
+                _messageToDisplay = value;
+            }
+        } 
 
         private PageType _jokePageType;
         /// <summary>
@@ -104,20 +161,46 @@ namespace FirstWorldProblems
         /// </summary>
         public void LoadData()
         {
-            string lastJokeUpdateTime = getLastPropertyUpdateDatetime("lastJokeUpdate");
+            string lastJokeUpdateTime = getIsolatedStorageProperty(IsolatedStorageSettingsProperties.lastJokeUpdate);
             //When we put data in isolated storage we record the datetime of the most recent joke. If we don't have this setting this means we don't have any
             //jokes in isolated storage.
             if (lastJokeUpdateTime != "")
             {
                 LoadDataFromIsolatedStorage();
+                //We just loaded data from the isolated storage, therefore any message to display (current version just warning messages) are not relevent anymore.
+                this.MessageToDisplay = "";
             }
-           
-            this.IsDataLoaded = true;
+            if (HaveUseableInternetConnection() != false)
+            {
+                this.IsDataLoaded = true;
+                //We just loaded data from the isolated storage, therefore any message to display (current version just warning messages) are not relevent anymore.
+                this.MessageToDisplay = "";
 
-            //Sending the request to the database to get new jokes.
-            WebClient SMEWebClient = new WebClient();
-            SMEWebClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(SMEWebClient_DownloadStringCompleted);
-            SMEWebClient.DownloadStringAsync(new Uri("http://www.smewebsites.com/playground/FWP/get_jokes.php?lastUpdate=" + lastJokeUpdateTime));
+                //Sending the request to the database to get new jokes.
+                WebClient SMEWebClient = new WebClient();
+                SMEWebClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(SMEWebClient_DownloadStringCompleted);
+                SMEWebClient.DownloadStringAsync(new Uri("http://www.smewebsites.com/playground/FWP/get_jokes.php?lastUpdate=" + lastJokeUpdateTime));
+            }
+            else
+            {
+                if (lastJokeUpdateTime == "")
+                {
+                    //If there is already a joke in the JokesToDisplay we know its a warning message for the user.
+                    if (this.JokesToDisplay.Count != 1)
+                    {
+                        //We don't have access to the internet and nothing is stored in cache. We will let the user know they need an internet connection
+                        //DRS
+                        if (App.ViewModel.UserPermittedAppToConnectToInternet)
+                        {
+                            this.MessageToDisplay = "Please connect to the internet.";
+                        }
+                        else
+                        {
+                            this.MessageToDisplay = "Go to the about page, allow the app to access the Internet.";
+                        }
+                    }
+                }
+            }
         }
 
         public void FavoriteJokeUpdate(bool favoriteStatus, int jokeID)
@@ -153,7 +236,7 @@ namespace FirstWorldProblems
         private void loadJokesToDisplay()
         {
             this.JokesToDisplay.Clear();
-
+       
             if (JokePageType == PageType.Favorites)
             {
                 foreach (Joke joke in this.AllJokes)
@@ -189,6 +272,11 @@ namespace FirstWorldProblems
                     this.JokesToDisplay.Add(joke);
                 }
             }
+
+            if (!(this.MessageToDisplay.Equals("")) && this.JokesToDisplay.Count == 0)
+            {
+                this.JokesToDisplay.Add(new Joke() { JokeText = this.MessageToDisplay, Favorite = false });
+            }
         }
 
         //Processing the response from the database. It will return a JSON object. Using JSON.net to deserlize the object.
@@ -205,7 +293,7 @@ namespace FirstWorldProblems
             {
                 string newestJokes = (e.Result).ToString();
 
-                updateLastPropertyUpdatedTime(newestJokes, "lastJokeUpdate");
+                updateLastPropertyUpdatedTime(newestJokes, IsolatedStorageSettingsProperties.lastJokeUpdate);
 
                 //The e.result contains only new items we don't have in our cache,  add these items into our isolated storage.
                 AddNewObjectsToIsolatedStorage(newestJokes, FilePath);
