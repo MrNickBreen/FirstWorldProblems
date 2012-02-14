@@ -34,7 +34,9 @@
             <CheckBox Grid.Row="0" IsChecked="{Binding UserPermittedAppToConnectToInternet}" Click="CheckBox_Click"/>   
             <TextBlock Height="72" Margin="64,0,0,0" Text="Access Internet for new jokes" />   
             <TextBlock Grid.Row="1" Text="Created by SMEWebsites. More data here." />
-            <Button Content="Rate this app" Height="auto" HorizontalAlignment="Left" Margin="6,280,0,0" BorderBrush="CadetBlue" Name="RateThisAppButton" Click="RateThisAppButton_Click" VerticalAlignment="Top" Width="433" />
+            <!--
+            DRS & TODO: Uncomment on the first update to the app marketplace (It doesn't work because the app is not not live on marketplace)
+            <Button Content="Rate this app" Height="auto" HorizontalAlignment="Left" Margin="6,280,0,0" BorderBrush="CadetBlue" Name="RateThisAppButton" Click="RateThisAppButton_Click" VerticalAlignment="Top" Width="433" />-->
         </Grid>
     </Grid>
 </phone:PhoneApplicationPage>

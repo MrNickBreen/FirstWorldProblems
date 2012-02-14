@@ -30,14 +30,14 @@ namespace FirstWorldProblems
         public ObservableCollection<Category> AllCategories { get; private set; }
 
         /// <summary>
-        /// A collection for category objects to be displayed.(this could be a subset of AllJokes)
+        /// A collection for category IDs to be displayed. This is an integer List because it is easier to search through, List has a contains method.
         /// </summary>
         public List<int> CategoriesToDisplay { get; private set; }
 
         private string _messageToDisplay;
 
         /// <summary>
-        /// This is only used to display a message for the user to read.
+        /// This is only used to display a message for the user to read. Currently, it notifies the user if the app doesn't have access to the internet.
         /// </summary>
         public string MessageToDisplay
         {
@@ -64,7 +64,7 @@ namespace FirstWorldProblems
         }
 
         /// <summary>
-        /// Creates and adds a few ItemViewModel objects into the Items collection.
+        /// Loads category data from cache (isolated storage) and starts the request to access live data from the remote database.
         /// </summary>
         public void LoadData()
         {
@@ -75,6 +75,8 @@ namespace FirstWorldProblems
             if (lastCategoryUpdateTime != "")
             {
                 LoadDataFromIsolatedStorage();
+                //We just loaded data from the isolated storage, therefore any message to display (current version just warning messages) are not relevent anymore. 
+                this.MessageToDisplay = "";
             }
 
             if (HaveUseableInternetConnection() != false)
@@ -104,6 +106,12 @@ namespace FirstWorldProblems
             }
         }
 
+        /// <summary>
+        /// Finds the index of the category with categoryID in the collection of AllCategories. Returns -1 if category doesn't exist. This shouldn't ever happen
+        /// since elements are never removed or modified.
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns>index of category with categoryID</returns>
         private int findIndexOfCategory(int categoryID)
         {
             for (int i = 0; i <= AllCategories.Count; i++)
@@ -138,21 +146,26 @@ namespace FirstWorldProblems
             EditObjectAttribute(FilePath, (filterStatus ? "1" : "0"), categoryID, "viewCategoryFilter", "categoryID");
         }
 
-        //This method reads in the (cached) JSON joke data from isolated storage and loads it into our pivot.
+        /// <summary>
+        /// This method reads in the (cached) JSON joke data from isolated storage and loads it into our pivot.
+        /// </summary>
         private void LoadDataFromIsolatedStorage()
         {
             string categoryString = ReadFile(FilePath);
             LoadCategoriesIntoCollection(categoryString);
         }
 
-        //Parses the category string into a JArray and adds the categories to collection.
+        /// <summary>
+        /// Parses the category string into a JArray and adds the categories to collection.
+        /// </summary>
+        /// <param name="jsonCategoryString">JSON representation of the category data</param>
         private void LoadCategoriesIntoCollection(string jsonCategoryString)
         {
             JArray categoryJArray = JArray.Parse(jsonCategoryString);
 
             foreach (JObject category in categoryJArray)
             {
-                //This collection is bound to the pivot item                
+                //The AllCategories collection is bound to the category list item
                 this.AllCategories.Add(new Category() { CategoryID = (int.Parse(category["categoryID"].ToString())), ViewCategoryFilter = (category["viewCategoryFilter"].ToString() == "0" ? false : true), DateAdded = DateTime.Parse(category["dateAdded"].ToString()), CategoryText = category["categoryText"].ToString() });
                 if (category["viewCategoryFilter"].ToString() == "1")
                 {
@@ -163,10 +176,14 @@ namespace FirstWorldProblems
             this.IsDataLoaded = true;
         }
 
-        //Processing the response from the database. It will return a JSON object. Using JSON.net to deserlize the object.
+        /// <summary>
+        /// Processing the response from the database. It will return a JSON object. Using JSON.net to deserlize the object.
+        /// </summary>
+        /// <param name="sender">The sender is the webClient created in the constructor</param>
+        /// <param name="e"></param>
         private void SMEWebClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
-            //If we have an error 
+            //If we have an error we will have attempted to load the data from the cache before this. If nothing is loaded we will display an internet error message
             if (e.Error != null)
             {
                 return;

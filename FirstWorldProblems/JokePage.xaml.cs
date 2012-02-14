@@ -36,23 +36,24 @@ namespace FirstWorldProblems
         {
             InitializeComponent();
 
-            // Set the data context of the listbox control to the sample data
+            // Set the data context of the page to the main ViewModel
             DataContext = App.ViewModel;
-            this.Loaded += new RoutedEventHandler(JokePage_Loaded);
-
-            
+            this.Loaded += new RoutedEventHandler(JokePage_Loaded);            
         }
 
-        // Load data for the ViewModel Items
+        /// <summary>
+        /// Load data for the ViewModel Items
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void JokePage_Loaded(object sender, RoutedEventArgs e)
         {
             //Load the app button icons 
             DisableAppBarButtonsAndLabels();
-
         }
 
         /// <summary>
-        /// disables app buttons and labels if there is only 1 joke displaying, therefore there are no jokes to rotate through. 
+        /// disables app buttons if there is only 1 joke displaying, therefore there are no jokes to rotate through. 
         /// code credit: http://www.diaryofaninja.com/blog/2011/07/05/solved-why-donrsquot-applicationbar-bindings-work-ndash-windows-phone-7-sdk#.TzbevRakSK0.twitter
         /// </summary>
         private void DisableAppBarButtonsAndLabels()
@@ -69,12 +70,11 @@ namespace FirstWorldProblems
                 if (backButtonLocal != null)
                 {
                     backButtonLocal.IsEnabled = false;
-                }         
-                
-                //If we are displaying a message to the user explaning there are no data entries for the particular settings they have chose we need to disable the favorite button.
+                }
+
+                //We need to disable the favorite button if we are displaying a message to the user explaning there are no data entries for the particular settings they have chose
                 if (App.ViewModel.JokesToDisplay.Count == 1 && App.ViewModel.JokesToDisplay[0].JokeID == 0 && App.ViewModel.JokesToDisplay[0].Statistic == null)
                 {
-
                     ApplicationBarIconButton favoriteButtonLocal = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
                     if (favoriteButtonLocal != null)
                     {
@@ -108,8 +108,14 @@ namespace FirstWorldProblems
             }
         }
 
+        /// <summary>
+        /// The appbar back button Click event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LastJokeButton_Click(object sender, EventArgs e)
         {
+            //Makes sure the joke click system is a carasel (if we are the first item and click back it will display the very last item)
             if (this.jokesPivot.SelectedIndex != 0)
             {
                 this.jokesPivot.SelectedIndex = this.jokesPivot.SelectedIndex - 1;
@@ -120,7 +126,11 @@ namespace FirstWorldProblems
             }            
         }
 
-        //Switch to the next joke.
+        /// <summary>
+        /// The appbar next button click event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NextJokeButton_Click(object sender, EventArgs e)
         {
             if (this.jokesPivot.SelectedIndex != this.jokesPivot.Items.Count - 1)
@@ -133,6 +143,11 @@ namespace FirstWorldProblems
             }
         }
 
+        /// <summary>
+        /// The appbar favorite button Click event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FavoriteJokeButton_Click(object sender, EventArgs e)
         {
             currentJokeFavoriteStatus = !currentJokeFavoriteStatus;
@@ -143,14 +158,16 @@ namespace FirstWorldProblems
             //Call MainViewModel to update the cache
             App.ViewModel.FavoriteJokeUpdate(currentJokeFavoriteStatus, int.Parse((((Joke)(this.jokesPivot.SelectedItem)).JokeID).ToString()));
 
-            //If we are clicking the favorite button when we are in the favorited joke section it must mean the user wants to remove a joke from their favorite list
+            //If we are clicking the favorite button when we are in the favorited joke section we must remove this joke from their favorite list
             if (App.ViewModel.JokePageType == MainViewModel.PageType.Favorites)
             {
                 //If we only have one joke we are removing the last joke from our favorite list
                 if (App.ViewModel.JokesToDisplay.Count == 1)
                 {
+                    //DRS
                     App.ViewModel.JokesToDisplay.Add(new Joke() { JokeText = "There are no favorited jokes. Press back, try something else.", Favorite = false });
                 }
+
                 //Remove the entry from the current pivoted items if we unfavorite it
                 App.ViewModel.JokesToDisplay.RemoveAt(App.ViewModel.JokesToDisplay.IndexOf((Joke)this.jokesPivot.SelectedItem));
 
@@ -159,9 +176,11 @@ namespace FirstWorldProblems
                     DisableAppBarButtonsAndLabels();
                 }
 
-                //I reset this property because the user's currentPivotItem is another favorited pivot item
+                //I reset this property because the user's currentPivotItem we are redirect to on the favoriteJoke page is another favorited pivot item. This property is used to set
+                //the favorite appBar icon.
                 currentJokeFavoriteStatus = !currentJokeFavoriteStatus; 
             }
+            //We are not on the favorite joke page (i.e a regular page, no need to remove the joke items if they are not favorites)
             else
             {
                 //Change application bar favorite button image
@@ -179,7 +198,7 @@ namespace FirstWorldProblems
         }
 
         /// <summary>
-        /// When a new pivot item is loading this method confirms that the favorite icon accurately represents if the joke is favorited or not
+        /// When a new pivot item is loaded this method confirms that the favorite icon accurately represents if the joke is favorited or not
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

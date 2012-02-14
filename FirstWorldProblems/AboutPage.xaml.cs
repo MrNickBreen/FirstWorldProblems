@@ -39,7 +39,7 @@ namespace FirstWorldProblems
 
         private void RateThisAppButton_Click(object sender, RoutedEventArgs e)
         {
-            //DRS & TODO: Uncomment when you submit to app marketplace (It doesn't work because the app is not not live on marketplace)
+            //DRS & TODO: Uncomment on the first update to the app marketplace (It doesn't work because the app is not not live on marketplace)
             //MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
             //marketplaceReviewTask.Show();
         }

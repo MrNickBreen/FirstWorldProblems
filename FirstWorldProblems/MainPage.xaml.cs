@@ -49,8 +49,6 @@ namespace FirstWorldProblems
         private void About_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("/AboutPage.xaml", UriKind.Relative));
-        }
-
-      
+        }      
     }
 }
