@@ -39,8 +39,8 @@
                                 <TextBlock Margin="5,0" Padding="10,25" TextWrapping="Wrap" Text="{Binding JokeText}" HorizontalAlignment="Stretch" FontSize="32"/>
                                 <Border BorderBrush="White" BorderThickness="1"/>
                             </Grid>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,0,20" >
-                                <StackPanel Orientation="Vertical" Width="255" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                            <Grid  VerticalAlignment="Bottom" >
+                                <StackPanel Orientation="Vertical" Width="295" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                                     <Grid Background="#97000000" VerticalAlignment="Center" >
                                         <TextBlock TextWrapping="Wrap" Text="{Binding Statistic}" FontSize="22" HorizontalAlignment="Stretch" Margin="5,0,0,5" Padding="5,10"/>
                                         <HyperlinkButton NavigateUri="{Binding StatisticURL}"  FontSize="20" Content="Source" Height="32" x:Name="statistic" TargetName="_blank" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
@@ -48,8 +48,8 @@
                                     </Grid>                                    
                                     <HyperlinkButton  NavigateUri="{Binding CharityURL}" FontSize="22"  Content="{Binding Charity}" Height="42" HorizontalAlignment="Left" x:Name="charity" TargetName="_blank" VerticalAlignment="Top" />
                                 </StackPanel>
-                                <Image Source="{Binding CategoryImage}" Width="180" HorizontalAlignment="Right"   Margin="0,-20,0,0"/>
-                            </StackPanel>
+                                <Image Source="{Binding CategoryImage}" Width="180" VerticalAlignment="Bottom" HorizontalAlignment="Right"   Margin="0,-20,0,0"/>
+                            </Grid>
 
                         </Grid>
                     </DataTemplate>

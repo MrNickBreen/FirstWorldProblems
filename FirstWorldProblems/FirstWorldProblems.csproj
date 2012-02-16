@@ -136,6 +136,8 @@
     <Resource Include="Images\plainBG.png" />
     <Resource Include="Images\category5.png" />
     <Resource Include="Images\category6.png" />
+    <Resource Include="Images\category7.png" />
+    <Resource Include="Images\category8.png" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
