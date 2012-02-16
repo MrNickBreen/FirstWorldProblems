@@ -44,7 +44,7 @@ namespace FirstWorldProblems
         /// <param name="e"></param>
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            App.ViewModel.categoryViewModel.FilterCategoryUpdate((((System.Windows.Controls.CheckBox)sender).IsChecked == false ? false : true), int.Parse(((System.Windows.Controls.CheckBox)sender).Tag.ToString()));
+            App.ViewModel.categoryViewModel.FilterCategoryUpdate(((bool)((System.Windows.Controls.CheckBox)sender).IsChecked), int.Parse(((System.Windows.Controls.CheckBox)sender).Tag.ToString()));
             
             //I reset the jokePageType because the joke data will not update in the following scenario. If the user filters jokes, presses back and applys a new filter and views those jokes. 
             //It will not update the new filtered joke data since the PageType would be the same (filterCategoryJokes). Setting the PageType to ResetJokes 
