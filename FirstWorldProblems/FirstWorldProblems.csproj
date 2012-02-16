@@ -117,6 +117,7 @@
     <Content Include="ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\header.png" />
     <Content Include="Images\appbar.back.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -129,6 +130,12 @@
     <Content Include="Images\appbar.next.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\tile.png" />
+    <Resource Include="Images\jokeBG.png" />
+    <Resource Include="Images\category4.png" />
+    <Resource Include="Images\plainBG.png" />
+    <Resource Include="Images\category5.png" />
+    <Resource Include="Images\category6.png" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

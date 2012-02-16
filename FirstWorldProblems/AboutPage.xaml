@@ -14,7 +14,7 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -38,5 +38,8 @@
             DRS & TODO: Uncomment on the first update to the app marketplace (It doesn't work because the app is not not live on marketplace)
             <Button Content="Rate this app" Height="auto" HorizontalAlignment="Left" Margin="6,280,0,0" BorderBrush="CadetBlue" Name="RateThisAppButton" Click="RateThisAppButton_Click" VerticalAlignment="Top" Width="433" />-->
         </Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/FirstWorldProblems;component/Images/plainBG.png" Stretch="None" />
+        </Grid.Background>
     </Grid>
 </phone:PhoneApplicationPage>

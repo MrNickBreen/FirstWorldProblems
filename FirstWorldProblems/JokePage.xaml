@@ -15,42 +15,50 @@
     shell:SystemTray.IsVisible="True">
 
     <!--Data context is set to sample data above and LayoutRoot contains the root grid where all other page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush ImageSource="/FirstWorldProblems;component/Images/plainBG.png" Stretch="None" />
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,0">
             <!-- The ItemsSource will be updated on LoadData() from content from isolated storage cache and the online database if any new jokes are available-->
             <controls:Pivot x:Name="jokesPivot" ItemsSource="{Binding JokesToDisplay}" LoadedPivotItem="jokesPivot_LoadedPivotItem" >
                 <controls:Pivot.HeaderTemplate>
-                   <DataTemplate>
-                       <!-- <TextBlock Text="{Binding JokeID}" />-->
+                    <DataTemplate>
+                        <!-- <TextBlock Text="{Binding JokeID}" />-->
                     </DataTemplate>
                 </controls:Pivot.HeaderTemplate>
                 <controls:Pivot.ItemTemplate>
                     <DataTemplate>
                         <!-- add later: SelectionChanged="coursesList_SelectionChanged"-->
-                        <ListBox>
-                            <ScrollViewer Height="330">
-                                <TextBlock  TextWrapping="Wrap" Text="{Binding JokeText}" Width="440" FontSize="60" />
-                            </ScrollViewer>
-                            <ScrollViewer Height="200">
-                                <TextBlock TextWrapping="Wrap" Text="{Binding Statistic}" FontSize="30" Width="440"/>
-                            </ScrollViewer>
-                          
-                                <HyperlinkButton NavigateUri="{Binding StatisticURL}"  Content="Statistic Data Source" Height="30" HorizontalAlignment="Left" Margin="10,10,0,0" x:Name="statistic" TargetName="_blank" VerticalAlignment="Top" />
-                                <TextBlock Grid.Column="0" Text="Donate to:" TextAlignment="Left" HorizontalAlignment="Left"  x:Name="DonateToText" VerticalAlignment="Top" />
-                                <HyperlinkButton Grid.Column="1" NavigateUri="{Binding CharityURL}"  Content="{Binding Charity}" HorizontalAlignment="Left" x:Name="charity" TargetName="_blank" VerticalAlignment="Top" />
-                  
-                        </ListBox>
+                        <Grid >
+                            <Grid Background="#97000000" VerticalAlignment="Top" Margin="0,20"> 
+                                <TextBlock Margin="5,0" Padding="10,25" TextWrapping="Wrap" Text="{Binding JokeText}" HorizontalAlignment="Stretch" FontSize="32"/>
+                                <Border BorderBrush="White" BorderThickness="1"/>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,0,20" >
+                                <StackPanel Orientation="Vertical" Width="255" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                    <Grid Background="#97000000" VerticalAlignment="Center" >
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding Statistic}" FontSize="22" HorizontalAlignment="Stretch" Margin="5,0,0,5" Padding="5,10"/>
+                                        <HyperlinkButton NavigateUri="{Binding StatisticURL}"  FontSize="20" Content="Source" Height="32" x:Name="statistic" TargetName="_blank" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                                        <Border BorderBrush="White" BorderThickness="1"/>
+                                    </Grid>                                    
+                                    <HyperlinkButton  NavigateUri="{Binding CharityURL}" FontSize="22"  Content="{Binding Charity}" Height="42" HorizontalAlignment="Left" x:Name="charity" TargetName="_blank" VerticalAlignment="Top" />
+                                </StackPanel>
+                                <Image Source="{Binding CategoryImage}" Width="180" HorizontalAlignment="Right"   Margin="0,-20,0,0"/>
+                            </StackPanel>
+
+                        </Grid>
                     </DataTemplate>
                 </controls:Pivot.ItemTemplate>
             </controls:Pivot>
-            
+            <Grid Height="100" HorizontalAlignment="Left" Margin="10,10,0,0" Name="grid1" VerticalAlignment="Top" Width="200" />
         </Grid>
     </Grid>
- 
+
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">

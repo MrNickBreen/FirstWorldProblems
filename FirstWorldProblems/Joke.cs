@@ -22,7 +22,8 @@ namespace FirstWorldProblems
         public string Charity { get; set; }
         public string CharityURL { get; set; }
         public bool Favorite { get; set;}
-        public int CategoryID { get; set; }
+        public int CategoryID { get; set; }  //NICK: this should be an enum, otherwise we have to memorise which numbers are which categories
+        public string CategoryImage { get; set; }
 
     }
 }
