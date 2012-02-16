@@ -1,3 +1,22 @@
+<<<<<<< HEAD
+﻿<xapCache source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\FirstWorldProblems.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="2/14/2012 10:25:17 AM">
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="1/29/2012 10:26:29 AM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Background.png" archivePath="Background.png" lastWriteTime="1/29/2012 10:26:19 AM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="1/29/2012 10:26:19 AM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\obj\Debug\FirstWorldProblems.dll" archivePath="FirstWorldProblems.dll" lastWriteTime="2/14/2012 10:25:16 AM" />
+  <file source="C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v7.1\Libraries\Silverlight\Microsoft.Phone.Controls.dll" archivePath="Microsoft.Phone.Controls.dll" lastWriteTime="9/15/2011 4:36:26 PM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\Json40r7\Bin\WindowsPhone\Newtonsoft.Json.dll" archivePath="Newtonsoft.Json.dll" lastWriteTime="1/26/2012 10:07:24 PM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Images\appbar.back.rest.png" archivePath="Images\appbar.back.rest.png" lastWriteTime="2/11/2012 10:12:51 PM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Images\appbar.favs.addto.rest.png" archivePath="Images\appbar.favs.addto.rest.png" lastWriteTime="2/11/2012 10:12:51 PM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Images\appbar.favs.rest.png" archivePath="Images\appbar.favs.rest.png" lastWriteTime="2/11/2012 10:12:51 PM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Images\appbar.next.rest.png" archivePath="Images\appbar.next.rest.png" lastWriteTime="2/11/2012 10:12:51 PM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\SplashScreenImage.jpg" archivePath="SplashScreenImage.jpg" lastWriteTime="1/29/2012 10:26:19 AM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="2/14/2012 10:25:17 AM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.back.rest.png" archivePath="Images\appbar.back.rest.png" lastWriteTime="2/11/2012 10:12:51 PM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.favs.addto.rest.png" archivePath="Images\appbar.favs.addto.rest.png" lastWriteTime="2/11/2012 10:12:51 PM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.favs.rest.png" archivePath="Images\appbar.favs.rest.png" lastWriteTime="2/11/2012 10:12:51 PM" />
+  <file source="C:\Users\Nick\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.next.rest.png" archivePath="Images\appbar.next.rest.png" lastWriteTime="2/11/2012 10:12:51 PM" />
+=======
 ﻿<xapCache source="C:\Users\David\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\FirstWorldProblems.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="14/02/2012 10:05:44 PM">
   <file source="C:\Users\David\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="14/02/2012 9:58:09 PM" />
   <file source="C:\Users\David\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Background.png" archivePath="Background.png" lastWriteTime="14/02/2012 9:58:09 PM" />
@@ -15,4 +34,5 @@
   <file source="C:\Users\David\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.favs.addto.rest.png" archivePath="Images\appbar.favs.addto.rest.png" lastWriteTime="14/02/2012 10:02:20 PM" />
   <file source="C:\Users\David\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.favs.rest.png" archivePath="Images\appbar.favs.rest.png" lastWriteTime="14/02/2012 10:02:20 PM" />
   <file source="C:\Users\David\Documents\Visual Studio 2010\Projects\FirstWorldProblems\FirstWorldProblems\Bin\Debug\Images\appbar.next.rest.png" archivePath="Images\appbar.next.rest.png" lastWriteTime="14/02/2012 10:02:20 PM" />
+>>>>>>> 2f2f96054a04180378c17ef2202833c7f47a0029
 </xapCache>

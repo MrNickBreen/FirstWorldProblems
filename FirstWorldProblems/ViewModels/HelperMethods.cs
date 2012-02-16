@@ -24,16 +24,20 @@ namespace FirstWorldProblems
         //Note: Do not create any global variables that can be changed in the helperMethod, even if both MainViewModel and CategoryViewModel need to both use said
         //variable. Since mainViewModel and CategoryViewModel are both inherited from HelperMethods class, each model will have their own instance of said variable.
         //Which means there may be two seperate values (this is not good).
+
         protected enum IsolatedStorageSettingsProperties
         {
             lastJokeUpdate = 1,
             lastCategoryUpdate = 2,
             userPermittedAppToConnectToInternet = 3
         }
+
         protected IsolatedStorageSettings isolatedStorageSettings = IsolatedStorageSettings.ApplicationSettings;
-
        
-
+        /// <summary>
+        /// Returns true if the app can access the internet, false otherwise.
+        /// </summary>
+        /// <returns></returns>
         protected bool HaveUseableInternetConnection()
         {
             if (NetworkInterface.GetIsNetworkAvailable() == false || App.ViewModel.UserPermittedAppToConnectToInternet == false)
@@ -46,7 +50,11 @@ namespace FirstWorldProblems
             }
         }
 
-        //propertyType options are: lastJokeUpdate or lastCategoryUpdate or userPermittedAppToConnectToInternet
+        /// <summary>
+        /// returns the value of a specific IsolatedStorage property. PropertyType options are: lastJokeUpdate or lastCategoryUpdate or userPermittedAppToConnectToInternet
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
         protected String getIsolatedStorageProperty(IsolatedStorageSettingsProperties propertyName)
         {
             String propertyNameString = propertyName.ToString();
@@ -54,10 +62,9 @@ namespace FirstWorldProblems
             {
                 if (propertyName == IsolatedStorageSettingsProperties.userPermittedAppToConnectToInternet)
                 {
-                    //TODO: change default to true;
-                    isolatedStorageSettings.Add(propertyName.ToString(), false);
+                    isolatedStorageSettings.Add(propertyName.ToString(), true);
                     isolatedStorageSettings.Save();
-                    return "false";
+                    return "true";
                 }
                 else
                 {
@@ -73,9 +80,10 @@ namespace FirstWorldProblems
         }
 
        
-        //code Credit: http://www.windowsphonegeek.com/tips/all-about-wp7-isolated-storage-store-data-in-isolatedstoragesettings
+       
         /// <summary>
-        /// Method specific to updating the dateAdded for categories or joke
+        /// Specific method for updating the dateAdded for categories or jokes.
+        /// code Credit: http://www.windowsphonegeek.com/tips/all-about-wp7-isolated-storage-store-data-in-isolatedstoragesettings
         /// </summary>
         /// <param name="dataFromDatabase">New update value</param>
         /// <param name="propertyType">the property we are updating.</param>
@@ -111,6 +119,11 @@ namespace FirstWorldProblems
             isolatedStorageSettings.Save();
         }
 
+        /// <summary>
+        /// Adds new joke or category objects to the isolated storage file.
+        /// </summary>
+        /// <param name="objectData"></param>
+        /// <param name="filePath"></param>
         protected void AddNewObjectsToIsolatedStorage(string objectData, string filePath)
         {
             if (!(IsolatedStorageFile.GetUserStoreForApplication().FileExists(filePath)))
@@ -126,7 +139,13 @@ namespace FirstWorldProblems
             isolatedStorageSettings.Save();
         }
 
-        //Isolated Storage code credit:http://www.windowsphonegeek.com/tips/All-about-WP7-Isolated-Storage---File-manipulations      
+        /// <summary>
+        /// Create an isolate storage file with a JSON formatted list of joke objects or category objects. 
+        /// //Isolated Storage code credit:http://www.windowsphonegeek.com/tips/All-about-WP7-Isolated-Storage---File-manipulations     
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="objectData"></param>
+ 
         protected void CreateNewFile(string filePath, string objectData)
         {
             StreamResourceInfo streamResourceInfo = Application.GetResourceStream(new Uri(filePath, UriKind.Relative));
@@ -150,7 +169,12 @@ namespace FirstWorldProblems
             }
         }
 
-        //Isolated Storage code credit:http://www.windowsphonegeek.com/tips/All-about-WP7-Isolated-Storage---File-manipulations
+        /// <summary>
+        /// Edit an existing isolate storage file by appending data at the end of the list of joke objects or category objects. The information is stored in JSON format.
+        /// Isolated Storage code credit:http://www.windowsphonegeek.com/tips/All-about-WP7-Isolated-Storage---File-manipulations
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="insertedText"></param>
         protected void EditExistingFile(string filePath, string insertedText)
         {
             using (IsolatedStorageFile myIsolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
@@ -173,8 +197,14 @@ namespace FirstWorldProblems
             }
         }
 
-        //Finds position of categories' or joke's attribute in isolatedStorage and overwrittes with new value. Will not work if newAttributeValue is not the exact size of the current attribute's value.
-        //TODO: write code such that the size of newAttributeValue does not matter. (When I implement the isolated storage database I will not need to)
+        /// <summary>
+        /// Finds position of categories' or joke's attribute in the isolatedStorage's file and overwrittes with new value. Will not work if newAttributeValue is not the exact size of the current attribute's value.
+        /// </summary>
+        /// <param name="filePath">Where the isolated storage's file is stored</param>
+        /// <param name="newAttributeValue"></param>
+        /// <param name="objectID">CategoryID or jokeID</param>
+        /// <param name="attribute">The name of the attribute we are updating</param>
+        /// <param name="objectIDPropertyName">Category or joke</param>
         protected void EditObjectAttribute(string filePath, string newAttributeValue, int objectID, string attribute, string objectIDPropertyName)
         {
             String isolatedStorageContents = "";
@@ -224,7 +254,12 @@ namespace FirstWorldProblems
         }
 
 
-        //Isolated Storage code credit:http://www.windowsphonegeek.com/tips/All-about-WP7-Isolated-Storage---File-manipulations
+        /// <summary>
+        /// Reads all of the text in the isolated storage file. The file contains data about all jokes or the categories
+        /// Isolated Storage code credit:http://www.windowsphonegeek.com/tips/All-about-WP7-Isolated-Storage---File-manipulations
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         protected String ReadFile(string filePath)
         {
             using (IsolatedStorageFile myIsolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())

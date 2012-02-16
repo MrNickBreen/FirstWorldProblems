@@ -43,9 +43,8 @@ namespace FirstWorldProblems
             }
             set
             {
-                _userPermittedAppToConnectToInternet = value;
-                
-                if (value)
+                //If the old value was set to false and we now set it to true
+                if (!_userPermittedAppToConnectToInternet && value)
                 {
                     //Clear the error messages from all the pages
                     this.JokesToDisplay.Clear();
@@ -55,6 +54,7 @@ namespace FirstWorldProblems
                     this.MessageToDisplay = "";
                     this.categoryViewModel.MessageToDisplay = "";
 
+                    //If data hasn't loaded load it now (send request to database for more information)
                     if (!this.categoryViewModel.IsDataLoaded)
                     {
                         this.categoryViewModel.LoadData();
@@ -65,9 +65,9 @@ namespace FirstWorldProblems
                         this.LoadData();
                     }
                 }
+                _userPermittedAppToConnectToInternet = value;
                 updateIsolatedStorageProperty(value.ToString(), IsolatedStorageSettingsProperties.userPermittedAppToConnectToInternet);
             }
-
         } 
 
         public enum PageType
@@ -78,9 +78,12 @@ namespace FirstWorldProblems
             ResetJokes = 4
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public CategoryViewModel categoryViewModel;
+
+        /// <summary>
+        /// Fairly certain we don't use this property
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;        
        
         private void NotifyPropertyChanged(String propertyName)
         {
@@ -93,6 +96,9 @@ namespace FirstWorldProblems
 
         public MainViewModel()
         {
+            //This must be set to true or else we have an infinite loop on app start because of the handling of an edge case if we start with no internet and regain a connection.
+            _userPermittedAppToConnectToInternet = true;
+
             this.AllJokes = new ObservableCollection<Joke>();
             this.JokesToDisplay = new ObservableCollection<Joke>();
             this.categoryViewModel = new CategoryViewModel();
@@ -107,14 +113,15 @@ namespace FirstWorldProblems
         public ObservableCollection<Joke> AllJokes { get; private set; }
 
         /// <summary>
-        /// A collection for joke objects.(this could be a subset of AllJokes)
+        /// A collection for joke objects. This could be a subset of AllJokes
         /// </summary>
         public ObservableCollection<Joke> JokesToDisplay { get; private set; }
 
+        
         private string _messageToDisplay;
 
         /// <summary>
-        /// This is only used to display a message for the user to read.
+        /// This is only used to display a message for the user to read. 
         /// </summary>
         protected string MessageToDisplay
         {
@@ -126,11 +133,12 @@ namespace FirstWorldProblems
             {
                 _messageToDisplay = value;
             }
-        } 
+        }
 
         private PageType _jokePageType;
+
         /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding
+        /// This property is used to determine what joke page to display.
         /// </summary>
         /// <returns></returns>
         public PageType JokePageType
@@ -144,6 +152,7 @@ namespace FirstWorldProblems
                 if (value != _jokePageType)
                 {
                     _jokePageType = value;
+
                     //Reload the data to be shown in the pivot since the user wants to see less/more information from the last time the joke page was loaded
                     loadJokesToDisplay();
                 }
@@ -167,9 +176,10 @@ namespace FirstWorldProblems
             if (lastJokeUpdateTime != "")
             {
                 LoadDataFromIsolatedStorage();
-                //We just loaded data from the isolated storage, therefore any message to display (current version just warning messages) are not relevent anymore.
+                //We just loaded data from the isolated storage, therefore any message to display (current version just warning messages) is not relevent anymore. 
                 this.MessageToDisplay = "";
             }
+
             if (HaveUseableInternetConnection() != false)
             {
                 this.IsDataLoaded = true;
@@ -183,9 +193,11 @@ namespace FirstWorldProblems
             }
             else
             {
+                //We don't have any internet connection.
                 if (lastJokeUpdateTime == "")
                 {
-                    //If there is already a joke in the JokesToDisplay we know its a warning message for the user.
+                    //We don't have any cached data. Therefore we need to display a warning message.
+                    //However, if there is already a joke in the JokesToDisplay we know its a warning message for the user.
                     if (this.JokesToDisplay.Count != 1)
                     {
                         //We don't have access to the internet and nothing is stored in cache. We will let the user know they need an internet connection
@@ -203,19 +215,29 @@ namespace FirstWorldProblems
             }
         }
 
+        /// <summary>
+        /// A joke was just favorited or un-favorited. Updates cache accordingly.
+        /// </summary>
+        /// <param name="favoriteStatus"></param>
+        /// <param name="jokeID"></param>
         public void FavoriteJokeUpdate(bool favoriteStatus, int jokeID)
         {
             EditObjectAttribute(FilePath, (favoriteStatus ? "1" : "0"), jokeID, "favorite", "id");
         }
 
-        //This method reads in the (cached) JSON joke data from isolated storage and loads it into our pivot.
+        /// <summary>
+        /// This method reads in the (cached) JSON joke data from isolated storage and loads it into our pivot.
+        /// </summary>
         private void LoadDataFromIsolatedStorage()
         {
             string jokesString = ReadFile(FilePath);
             LoadJokesIntoPivot(jokesString);         
         }
 
-        //Parses the joke string into a JArray and adds the jokes to the JokesToDisplay collection.
+        /// <summary>
+        /// Parses the joke string into a JArray and adds the jokes to the AllJokes collection.
+        /// </summary>
+        /// <param name="jsonJokeString"></param>
         private void LoadJokesIntoPivot(string jsonJokeString)
         {
             JArray jokesJArray = JArray.Parse(jsonJokeString);
@@ -223,7 +245,7 @@ namespace FirstWorldProblems
             foreach (JObject joke in jokesJArray)
             {
                 Joke currentJokeToAdd = new Joke() { CategoryID = (int.Parse(joke["categoryID"].ToString())), Favorite = (joke["favorite"].ToString()=="0" ? false : true), Author = joke["author"].ToString(), Charity = joke["charity"].ToString(), CharityURL = joke["charityURL"].ToString(), DateAdded = DateTime.Parse(joke["dateAdded"].ToString()), JokeID = int.Parse(joke["id"].ToString()), JokeText = joke["joke"].ToString(), Statistic = joke["statistic"].ToString(), StatisticURL = joke["statisticURL"].ToString() };
-                //This collection is bound to the pivot item                
+                             
                 this.AllJokes.Add(currentJokeToAdd);
             }
 
@@ -248,6 +270,7 @@ namespace FirstWorldProblems
                 }
                 if (this.JokesToDisplay.Count == 0)
                 {
+                    //DRS
                     this.JokesToDisplay.Add(new Joke() { JokeText = "There are no favorited jokes. Press back, try something else.", Favorite=false});
                 }
             }
@@ -273,13 +296,19 @@ namespace FirstWorldProblems
                 }
             }
 
+            //If we have a message to display and there are no jokes to display we should display the message in the joke pivot as the only item. 
+            //We display the message in the joke pivot because there is not enough room to have space for a warning dialog box that is used so infrequently.
             if (!(this.MessageToDisplay.Equals("")) && this.JokesToDisplay.Count == 0)
             {
                 this.JokesToDisplay.Add(new Joke() { JokeText = this.MessageToDisplay, Favorite = false });
             }
         }
 
-        //Processing the response from the database. It will return a JSON object. Using JSON.net to deserlize the object.
+        /// <summary>
+        /// Processing the response from the database. It will return a JSON object. Using JSON.net to deserlize the object.
+        /// </summary>
+        /// <param name="sender">Webclient in the constructor</param>
+        /// <param name="e"></param>
         private void SMEWebClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
             //If we have an error 

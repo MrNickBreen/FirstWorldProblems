@@ -17,13 +17,17 @@ namespace FirstWorldProblems
     {
         public FilterByCategoryPage()
         {
-             // Set the data context of the listbox control to the sample data
+             // Set the data context of the listbox control to the category data
             DataContext = App.ViewModel.categoryViewModel;
             this.Loaded += new RoutedEventHandler(FilterByCategoryPage_Loaded);
             InitializeComponent();
         }
 
-        // Load data for the ViewModel Items
+        /// <summary>
+        /// Load data for the ViewModel Items
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FilterByCategoryPage_Loaded(object sender, RoutedEventArgs e)
         {
            
@@ -34,7 +38,7 @@ namespace FirstWorldProblems
         }
 
         /// <summary>
-        /// The checkbox has been checked, update local variable and send the data to the cache to update what categories to display
+        /// A category checkbox has been checked, update local variable and send the data to the cache to update what categories to display
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -48,6 +52,11 @@ namespace FirstWorldProblems
             App.ViewModel.JokePageType = MainViewModel.PageType.ResetJokes;
         }
 
+        /// <summary>
+        /// Load filtered jokes button has been pressed. Load the jokes page to display certain categories.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FilteredCategoryJokes_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("/JokePage.xaml?id=" + MainViewModel.PageType.FilteredCategoryJokes, UriKind.Relative));
