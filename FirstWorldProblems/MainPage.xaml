@@ -14,19 +14,23 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Margin="0,340,0,0">
-            <Button Name="AllJokes"  Height="102" Click="AllJokes_Click" Content="All Jokes"   HorizontalAlignment="Stretch" />
-            <Button Name="FavoriteJokes" Height="102" Click="FavoriteJokes_Click" Content="Favorites"  HorizontalAlignment="Stretch" />
-            <Button Content="Filter By Category" Height="102"  Name="FilterByCategory" HorizontalAlignment="Stretch" Click="FilterByCategory_Click"  />
-            <Button Content="About" Height="102"   Name="AboutPage" Click="About_Click" HorizontalAlignment="Stretch"  />
+        <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+            <Image  Name="imgHeader" Height="350" Source="/FirstWorldProblems;component/Images/header.png" Margin="0,8,0,20"/>
+            <Button Name="AllJokes"  Height="92" Click="AllJokes_Click" Content="Browse"   HorizontalAlignment="Stretch" Background="#96000000" BorderThickness="1,1,1,1" />
+            <Button Name="FavoriteJokes" Height="92" Click="FavoriteJokes_Click" Content="Favorites"  HorizontalAlignment="Stretch" Background="#96000000" BorderThickness="1,1,1,1" />
+            <Button Content="Category Filters" Height="92"  Name="FilterByCategory" HorizontalAlignment="Stretch" Click="FilterByCategory_Click"  Background="#96000000" BorderThickness="1,1,1,1" />
+            <Button Content="About" Height="92"   Name="AboutPage" Click="About_Click" HorizontalAlignment="Stretch" Background="#96000000" BorderThickness="1,1,1,1"  />
             <!--<Button Content="Settings" Height="78" HorizontalAlignment="Left" Margin="0,308,0,0" Name="Settings" Click="Settings_Click" VerticalAlignment="Top" Width="450" />-->
         </StackPanel>
+        <Grid.Background>
+            <ImageBrush ImageSource="/FirstWorldProblems;component/Images/plainBG.png" Stretch="None" />
+        </Grid.Background>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->

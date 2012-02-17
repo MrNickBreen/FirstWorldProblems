@@ -15,7 +15,7 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -50,8 +50,11 @@
                     </ListBox.ItemTemplate>                        
                 </ListBox>
             </ScrollViewer>
-            <Button Grid.Row="3" Name="FilteredCategoryJokes" Click="FilteredCategoryJokes_Click" Content="Show Filtered Jokes" BorderBrush="Chartreuse" BorderThickness="2" Margin="6,6,6,648" />
+            <Button Grid.Row="3" Name="FilteredCategoryJokes" Click="FilteredCategoryJokes_Click" Content="Show Filtered Jokes"  Margin="6,6,6,648" Background="#96000000" BorderThickness="1,1,1,1"  />
         </Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/FirstWorldProblems;component/Images/plainBG.png" Stretch="None" />
+        </Grid.Background>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->
